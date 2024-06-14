@@ -12,7 +12,7 @@
     <h2>Focus on simple subject-verb-direct object sentences</h2>
 
     <div class="container">
-        <form method="POST">
+        <form id="myform">
             <div>
                 <label for="input">Input:</label>
                 <textarea id="input" name="inputQuery" style="width: 100%; height: 100px;"></textarea>
@@ -127,6 +127,33 @@
             padding-left: 5px;
         }
     </style>
+    <script>
+        document.getElementById('myform').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const form = event.target
+            const formData = new FormData(form)
+            console.log(formData)
+
+            const response = await fetch('/api', {
+                method: 'POST',
+                body: formData
+            })
+            console.log(response)
+
+            const data = await response.json()
+            updateFields(data)
+
+        })
+
+        function updateFields(data) {
+            const originalDiv = document.getElementById('original')
+            const correctedDiv = document.getElementById('corrected')
+            const instructionsDiv = document.getElementById('instructions')
+            originalDiv.innerHTML = data.original
+            correctedDiv.innerHTML = data.corrected
+            instructionsDiv.innerHTML = data.instructions
+        }
+    </script>
 </body>
 
 </html>
