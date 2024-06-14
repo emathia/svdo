@@ -132,16 +132,17 @@
             event.preventDefault();
             const btnSubmit = document.getElementById('submit')
             const txtInput = document.getElementById('input')
-            btnSubmit.disabled = true;
-            txtInput.disabled = true;
             const form = event.target
             const formData = new FormData(form)
-
+            btnSubmit.disabled = true;
+            txtInput.disabled = true;
             const response = await fetch('/api', {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+                body: JSON.stringify(formData)
             })
-
             const data = await response.json()
             updateFields(data)
             btnSubmit.disabled = false;
