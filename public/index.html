@@ -17,7 +17,7 @@
                 <label for="input">Input:</label>
                 <textarea id="input" name="inputQuery" style="width: 100%; height: 100px;"></textarea>
             </div>
-            <button type="submit">Submit</button>
+            <button type="submit" id="submit">Correct my sentence</button>
         </form>
 
         <div class="row">
@@ -130,18 +130,22 @@
     <script>
         document.getElementById('myform').addEventListener('submit', async function (event) {
             event.preventDefault();
+            const btnSubmit = document.getElementById('submit')
+            const txtInput = document.getElementById('input')
+            btnSubmit.disabled = true;
+            txtInput.disabled = true;
             const form = event.target
             const formData = new FormData(form)
-            console.log(formData)
 
             const response = await fetch('/api', {
                 method: 'POST',
                 body: formData
             })
-            console.log(response)
 
             const data = await response.json()
             updateFields(data)
+            btnSubmit.disabled = false;
+            txtInput.disabled = false;
 
         })
 
