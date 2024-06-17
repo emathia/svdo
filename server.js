@@ -80,7 +80,7 @@ const gptRequest = async (inputQuery) => {
     return {
         original: gptanswer.student_snippet,
         corrected: gptanswer.corrected_snippet,
-        instruction: gptanswer.instructions
+        instructions: gptanswer.instructions
     }
 
 
