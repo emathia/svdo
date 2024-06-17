@@ -8,9 +8,8 @@ app.use(express.urlencoded({ extended: true })) //This allos us to decode the re
 app.use(express.json()) //This allows us to parse json data.
 
 // Make a call to chatGPT to get information
-app.post('/api', (req, res) => {
-    console.log(req)
-    const gpt = gptRequest(req.body.inputQuery)
+app.post('/api', async (req, res) => {
+    const gpt = await gptRequest(req.body.inputQuery)
     res.send({
         original: gpt.original,
         corrected: gpt.corrected,
@@ -21,7 +20,6 @@ app.post('/api', (req, res) => {
 
 
 const gptRequest = async (inputQuery) => {
-    console.log(inputQuery)
     var gpt_request = {
         model: "gpt-4o",
         messages: [
@@ -75,8 +73,7 @@ const gptRequest = async (inputQuery) => {
     });
 
     let returned_data = await res.json();
-    console.log(returned_data)
-    let string_data = returned_data.choices[0].message.tool_calls[0].function.arguments;
+    let string_data = await returned_data.choices[0].message.tool_calls[0].function.arguments;
     let gptanswer = await JSON.parse(string_data);
 
 
