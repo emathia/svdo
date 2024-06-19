@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 const app = express();
 app.listen(3000);
@@ -6,9 +7,11 @@ app.listen(3000);
 app.use(express.static("public"))  // This allows us to server static html files.
 app.use(express.urlencoded({ extended: true })) //This allos us to decode the request body.
 app.use(express.json()) //This allows us to parse json data.
+app.use(cors({ origin: "http://localhost:3000" }));
+
 
 // Make a call to chatGPT to get information
-app.post('/api', async (req, res) => {
+app.post('/api', cors(), async (req, res) => {
     const gpt = await gptRequest(req.body.inputQuery)
     res.send({
         original: gpt.original,
